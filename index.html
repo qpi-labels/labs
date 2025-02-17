@@ -23,12 +23,6 @@
             -moz-user-select: none;    
             -ms-user-select: none;     
         }
-        @media (prefers-color-scheme: dark) {
-    body {
-        background-color: black;
-        color: white;
-    }
-        }
         img {
             display: block;
             margin: 0 auto;
@@ -64,6 +58,27 @@
         document.addEventListener('selectstart', function(e) {
             e.preventDefault();
         });
+        @media (prefers-color-scheme: dark) {
+        body {
+        background-color: black;
+        color: white;
+        }
+        .access-button {
+            background-color: rgb(10, 132, 255);
+            color: #fff;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 36px;
+            font-size: large;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease-out, background-color 0.3s ease;
+        }
+        .access-button:hover {
+            background-color: rgb(10, 160, 255);
+            transform: scale(1.05);
+        }
+        
     </script>
 </head>
 
