@@ -21,7 +21,7 @@
             -webkit-user-select: none; 
             -moz-user-select: none;    
             -ms-user-select: none;     
-            margin: 0; /* body margin 제거 */
+            margin: 0;
         }
         img {
             display: block;
@@ -63,34 +63,37 @@
             }
 
         header {
-            position: fixed; /* 스크롤에 따라 고정 */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.9); /* 반투명 흰색 배경 */
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px); /* 블러 효과 추가 */
             padding: 20px;
-            z-index: 100; /* 다른 요소 위에 표시 */
+            z-index: 100;
             display: flex;
-            align-items: center; /* 수직 가운데 정렬 */
+            align-items: center;
+            border-bottom: 1px solid rgba(142, 142, 147); /* 하단 선 추가 */
         }
 
         header h1 {
             font-size: x-large;
             margin: 0;
             font-weight: 700;
-            margin-left: 20px; 
+            margin-left: 20px;
         }
 
         @media (prefers-color-scheme: dark) {
             header {
-                background-color: rgba(0, 0, 0, 0.9);
+                background-color: rgba(0, 0, 0, 0.7);
+                border-bottom: 1px solid rgba(142, 142, 147); /* 다크 모드에서 선 색상 변경 */
             }
             header h1 {
                 color: white;
             }
         }
 
-            main {
+        main {
             padding-top: 80px;
         }
     </style>
