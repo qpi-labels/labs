@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>쿼터파이</title>
+    <link rel="shortcut icon" type="image/x-icon" href="logo.ico">
+    <meta property="og:url" content="https://qpi-labels.github.io/main/">
+    <meta property="og:title" content="쿼터파이">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="og.png">
+    <meta property="og:description" content="만족도 2년연속 1위! 쿼터파이">
+    <style>
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+        body {
+            background-color: #f0f0f0;
+            color: #222;
+            font-family: 'Pretendard Variable';
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 80%;
+            height: auto;
+            filter: grayscale(20%);
+            transition: opacity 0.3s ease, filter 0.3s ease;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            margin: 5px 0;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .access-button {
+            background-color: #444;
+            color: #eee;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 0;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .access-button:hover {
+            background-color: #666;
+            transform: scale(1.02);
+        }
+
+        footer {
+            background-color: #333;
+            color: #eee;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #111;
+                color: #eee;
+            }
+
+            .access-button {
+                background-color: #666;
+                color: #222;
+                box-shadow: none;
+            }
+
+            .access-button:hover {
+                background-color: #888;
+            }
+
+            footer {
+                background-color: #222;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        function updateLogo() {
+            const logoImg = document.getElementById('logo');
+            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            logoImg.style.opacity = 0;
+            setTimeout(() => {
+                logoImg.src = isDarkMode ? 'logo_dark.png' : 'logo.png';
+                logoImg.style.opacity = 1;
+            }, 200);
+        }
+        
+        document.addEventListener("DOMContentLoaded", updateLogo);
+
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        if (darkModeMediaQuery.addEventListener) {
+            darkModeMediaQuery.addEventListener('change', updateLogo);
+        } else if (darkModeMediaQuery.addListener) {
+            darkModeMediaQuery.addListener(updateLogo);
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <img id="logo" src="logo.png" alt="QPILABELS">
+
+    <h1>쿼터파이</h1>
+    <p>Since 2024</p>
+    <p>2024년 설립된 쿼터파이는 충남과학고등학교의 자율동아리입니다.</p>
+
+    <h1>상상을 현실로</h1>
+    <p>쿼터파이 프로젝트</p>
+    <div class="button-container">
+        <button class="access-button" onclick="window.location.href='https://qpi-labels.github.io/project/'">더 알아보기</button>
+    </div>
+
+    <h1>쿼터파이 커뮤니티</h1>
+    <div class="button-container">
+        <button class="access-button" onclick="window.location.href='https://github.com/qpi-labels/qpi-labels.github.io/discussions'">이동하기</button>
+    </div>
+</div>
+<footer>
+    <p>쿼터파이 메인 2025 ver. by 31th 이재원</p>
+    <p>2025 Q-PI, All Rights Reserved.</p>
+</footer>
+</body>
+</html>
