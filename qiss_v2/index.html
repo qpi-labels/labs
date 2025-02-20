@@ -26,32 +26,55 @@
             <div id="dbpia-results"></div>
         </div>
     </div><script>
-    async function searchScholar(query) {
-        const searchUrl = `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}`;
-        return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`)
-            .then(response => response.json())
-            .then(data => parseResults(data.contents, 'scholar-results'));
-    }
-
-    async function searchDBPia(query) {
-        const searchUrl = `https://dbpia.co.kr/search/topSearch?query=${encodeURIComponent(query)}`;
-        return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`)
-            .then(response => response.json())
-            .then(data => parseResults(data.contents, 'dbpia-results'));
-    }
-
     async function searchBoth() {
         const query = document.getElementById('query').value;
         if (!query) return;
-        
         document.getElementById('scholar-results').innerHTML = "검색 중...";
         document.getElementById('dbpia-results').innerHTML = "검색 중...";
-        
-        await Promise.all([searchScholar(query), searchDBPia(query)]);
+
+        const scholarUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://scholar.google.com/scholar?q=${query}`)}`;
+        const dbpiaUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.dbpia.co.kr/search/topSearch?query=${query}`)}`;
+
+        try {
+            const [scholarRes, dbpiaRes] = await Promise.all([
+                fetch(scholarUrl).then(res => res.json()),
+                fetch(dbpiaUrl).then(res => res.json())
+            ]);
+
+            parseScholarResults(scholarRes.contents);
+            parseDbpiaResults(dbpiaRes.contents);
+        } catch (error) {
+            document.getElementById('scholar-results').innerHTML = "검색 실패";
+            document.getElementById('dbpia-results').innerHTML = "검색 실패";
+        }
     }
 
-    function parseResults(html, elementId) {
-        document.getElementById(elementId).innerHTML = `<p>검색 결과를 가져왔습니다. (HTML 파싱 필요)</p>`;
+    function parseScholarResults(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        let results = "";
+        doc.querySelectorAll('.gs_ri').forEach(item => {
+            const titleElement = item.querySelector('.gs_rt a');
+            const title = titleElement ? titleElement.innerText : "제목 없음";
+            const link = titleElement ? titleElement.href : "#";
+            const authorElement = item.querySelector('.gs_a');
+            const author = authorElement ? authorElement.innerText : "저자 정보 없음";
+            results += `<div class='result-item'><a href='${link}' target='_blank'>${title}</a><br>${author}</div>`;
+        });
+        document.getElementById('scholar-results').innerHTML = results || "결과 없음";
+    }
+
+    function parseDbpiaResults(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        let results = "";
+        doc.querySelectorAll('.title').forEach(item => {
+            const titleElement = item.querySelector('a');
+            const title = titleElement ? titleElement.innerText : "제목 없음";
+            const link = titleElement ? titleElement.href : "#";
+            results += `<div class='result-item'><a href='${link}' target='_blank'>${title}</a></div>`;
+        });
+        document.getElementById('dbpia-results').innerHTML = results || "결과 없음";
     }
 </script>
 
