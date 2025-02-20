@@ -23,10 +23,25 @@
             -ms-user-select: none;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         header {
-            background-color: #fafafa;
-            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px); /* 블러 효과 추가 */
+            padding: 13px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            border-bottom: 1.5px solid rgba(229, 229, 234); /* 하단 선 추가 */
+        }
+        
+        header h1 {
+            font-size: x-large;
+            margin: 0;
+            font-weight: 700;
+            margin-left: 20px;
         }
 
         body img {
@@ -98,6 +113,9 @@
     </style>
 </head>
 <body>
+    <header>
+        <h1 style="font-size: x-large; margin-bottom: 0; font-weight: 550;">QISS</h1>
+    </header>
     
         <div><a href="https://qpi-labels.github.io/main/"><img src="https://i.ibb.co/THk34pC/001-12.webp" alt="QISS Logo"></a></div>
         <input type="text" id="search-bar" placeholder="무엇이 궁금하신가요?">
