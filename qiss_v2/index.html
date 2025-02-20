@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Google Scholar Search</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+#search-results {
+  margin-top: 20px;
+}
+.result {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.result-title {
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>Google Scholar Search</h1>
+
+<input type="text" id="search-box" placeholder="Enter search term">
+<button onclick="search()">Search</button>
+
+<div id="search-results"></div>
+
+<script>
+function search() {
+  const searchTerm = document.getElementById('search-box').value;
+  const searchResults = document.getElementById('search-results');
+
+  // Clear previous results
+  searchResults.innerHTML = '';
+
+  // Replace with your actual Google Scholar search logic
+  // This is a placeholder for demonstration purposes
+  const mockResults = [
+    { title: 'Result 1', link: 'https://scholar.google.com/scholar?q=test1' },
+    { title: 'Result 2', link: 'https://scholar.google.com/scholar?q=test2' },
+    { title: 'Result 3', link: 'https://scholar.google.com/scholar?q=test3' }
+  ];
+
+  // Display the top 3 results
+  for (let i = 0; i < Math.min(3, mockResults.length); i++) {
+    const result = mockResults[i];
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'result';
+    resultDiv.innerHTML = `
+      <div class="result-title"><a href="${result.link}" target="_blank">${result.title}</a></div>
+    `;
+    searchResults.appendChild(resultDiv);
+  }
+}
+</script>
+
+</body>
+</html>
 
