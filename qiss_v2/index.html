@@ -26,21 +26,32 @@
             <div id="dbpia-results"></div>
         </div>
     </div><script>
-    async function searchBoth() {
-        const query = document.getElementById('query').value;
-        if (!query) return;
-        searchScholar(query);
-        searchDBPia(query);
-    }
-
     async function searchScholar(query) {
         const searchUrl = `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}`;
-        document.getElementById('scholar-results').innerHTML = `<p>검색 중... <a href='${searchUrl}' target='_blank'>구글 스칼라에서 보기</a></p>`;
+        return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`)
+            .then(response => response.json())
+            .then(data => parseResults(data.contents, 'scholar-results'));
     }
 
     async function searchDBPia(query) {
-        const searchUrl = `https://www.dbpia.co.kr/search/topSearch?query=${encodeURIComponent(query)}`;
-        document.getElementById('dbpia-results').innerHTML = `<p>검색 중... <a href='${searchUrl}' target='_blank'>DBPia에서 보기</a></p>`;
+        const searchUrl = `https://dbpia.co.kr/search/topSearch?query=${encodeURIComponent(query)}`;
+        return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`)
+            .then(response => response.json())
+            .then(data => parseResults(data.contents, 'dbpia-results'));
+    }
+
+    async function searchBoth() {
+        const query = document.getElementById('query').value;
+        if (!query) return;
+        
+        document.getElementById('scholar-results').innerHTML = "검색 중...";
+        document.getElementById('dbpia-results').innerHTML = "검색 중...";
+        
+        await Promise.all([searchScholar(query), searchDBPia(query)]);
+    }
+
+    function parseResults(html, elementId) {
+        document.getElementById(elementId).innerHTML = `<p>검색 결과를 가져왔습니다. (HTML 파싱 필요)</p>`;
     }
 </script>
 
