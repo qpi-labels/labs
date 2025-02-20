@@ -1,82 +1,193 @@
-<!DOCTYPE html><html lang="ko">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Scholar & DBPia 검색</title>
+    <title>쿼터파이</title>
+    <link rel="shortcut icon" type="image/x-icon" href="logo.ico">
+    <meta property="og:url" content="https://qpi-labels.github.io/main/">
+    <meta property="og:title" content="쿼터파이">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="og.png">
+    <meta property="og:description" content="만족도 2년연속 1위! 쿼터파이">
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
-        input { width: 300px; padding: 10px; }
-        button { padding: 10px; cursor: pointer; }
-        .results { display: flex; justify-content: space-around; margin-top: 20px; }
-        .results div { width: 45%; }
-        .result-item { border-bottom: 1px solid #ddd; padding: 10px 0; }
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+        body {
+            background-color: #fafafa;
+            color: black;
+            font-family: 'Pretendard Variable';
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        body img {
+            display: block;
+            margin: 0 auto;
+            width: 800px;
+            height: auto;
+            border: 1px solid #ffffff00;
+            border-radius: 5px;
+        }
+
+        #search-bar {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        #search-buttons {
+            margin-top: 10px;
+        }
+
+        .search-button {
+            background-color: rgb(0, 122, 255);
+            color: #fff;
+            border: none;
+            padding: 15px 35px;
+            font-size: medium;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+            transition: transform 0.2s ease-out, background-color 0.3s ease, box-shadow 0.3s ease; /* box-shadow 전환 효과 추가 */
+        }
+        .search-button:hover {
+            background-color: rgb(0, 150, 255);
+            box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+        }
+
+        #response-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            display: inline-block;
+            text-align: left;
+            width: 80%;
+        }
+
+        #current-time {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        #credit {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        #version {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        #empty {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <h2>Google Scholar & DBPia 검색</h2>
-    <input type="text" id="query" placeholder="검색어 입력">
-    <button onclick="searchBoth()">검색</button>
-    <div class="results">
-        <div>
-            <h3>Google Scholar 결과</h3>
-            <div id="scholar-results"></div>
+    <header>
+        <div><a href="https://qpi-labels.github.io/main/"><img src="https://i.ibb.co/THk34pC/001-12.webp" alt="QISS Logo"></a></div>
+        <input type="text" id="search-bar" placeholder="검색어를 입력하세요">
+        <div id="search-buttons">
+            <button class="search-button" onclick="searchInGoogle()">Google 검색결과</button>
+            <button class="search-button" onclick="searchInNaver()">Naver 검색결과</button>
+            <button class="search-button" onclick="searchInDBpia()">DBpia 검색결과</button>
+            <button class="search-button" onclick="searchInGs()">Google scholar 검색결과</button>
+            <button class="search-button" onclick="searchInRnE()">R&E 지원센터 검색결과</button>
+            <button class="search-button" onclick="searchInRISS()">RISS 검색결과</button>
+            <button class="search-button" onclick="askGPT()">GPT</button>
         </div>
-        <div>
-            <h3>DBPia 결과</h3>
-            <div id="dbpia-results"></div>
+
+        <div id="empty">ㅤ</div>
+        <div id="empty">ㅤ</div>
+        <div id="credit">- 편의정보(베타) -</div>
+
+        <div id="search-buttons">
+            <button class="search-button" onclick="classroom()">클래스룸</button>
+            <button class="search-button" onclick="cophygue()">꽃피게 위키독스</button>
         </div>
-    </div><script>
-    async function searchBoth() {
-        const query = document.getElementById('query').value;
-        if (!query) return;
-        document.getElementById('scholar-results').innerHTML = "검색 중...";
-        document.getElementById('dbpia-results').innerHTML = "검색 중...";
 
-        const scholarUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://scholar.google.com/scholar?q=${query}`)}`;
-        const dbpiaUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.dbpia.co.kr/search/topSearch?query=${query}`)}`;
+        <div id="current-time">현재 시간: <span id="time-display"></span></div>
 
-        try {
-            const [scholarRes, dbpiaRes] = await Promise.all([
-                fetch(scholarUrl).then(res => res.json()),
-                fetch(dbpiaUrl).then(res => res.json())
-            ]);
+        <div id="credit">Quarter-Pi Integrated Search System | 2024 Quarter-Pi</div>
+        <div id="version"><a href="https://github.com/Jaewon0418/QISS/releases">V 0.1.4 | build240507004</a></div>
+        <div id="empty">ㅤ</div>
+        <div id="empty">ㅤ</div>
+    </header>
 
-            parseScholarResults(scholarRes.contents);
-            parseDbpiaResults(dbpiaRes.contents);
-        } catch (error) {
-            document.getElementById('scholar-results').innerHTML = "검색 실패";
-            document.getElementById('dbpia-results').innerHTML = "검색 실패";
+
+    <script src="script.js"></script>
+    <script>
+        function searchInGoogle() {
+            const searchTerm = document.getElementById('search-bar').value;
+            window.open('https://www.google.com/search?q=' + encodeURIComponent(searchTerm));
         }
-    }
 
-    function parseScholarResults(html) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        let results = "";
-        doc.querySelectorAll('.gs_ri').forEach(item => {
-            const titleElement = item.querySelector('.gs_rt a');
-            const title = titleElement ? titleElement.innerText : "제목 없음";
-            const link = titleElement ? titleElement.href : "#";
-            const authorElement = item.querySelector('.gs_a');
-            const author = authorElement ? authorElement.innerText : "저자 정보 없음";
-            results += `<div class='result-item'><a href='${link}' target='_blank'>${title}</a><br>${author}</div>`;
-        });
-        document.getElementById('scholar-results').innerHTML = results || "결과 없음";
-    }
+        function searchInNaver() {
+            const searchTerm = document.getElementById('search-bar').value;
+            window.open('https://search.naver.com/search.naver?where=nexearch&sm=tab_hty&query=' + encodeURIComponent(searchTerm));
+        }
 
-    function parseDbpiaResults(html) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        let results = "";
-        doc.querySelectorAll('.title').forEach(item => {
-            const titleElement = item.querySelector('a');
-            const title = titleElement ? titleElement.innerText : "제목 없음";
-            const link = titleElement ? titleElement.href : "#";
-            results += `<div class='result-item'><a href='${link}' target='_blank'>${title}</a></div>`;
-        });
-        document.getElementById('dbpia-results').innerHTML = results || "결과 없음";
-    }
-</script>
+        function searchInDBpia() {
+            const searchTerm = document.getElementById('search-bar').value;
+            window.open('https://www.dbpia.co.kr/search/topSearch?searchOption=all&query=' + encodeURIComponent(searchTerm));
+        }
 
+        function searchInGs() {
+            const searchTerm = document.getElementById('search-bar').value;
+            window.open('https://scholar.google.com/scholar?hl=ko&as_sdt=0%2C5&q=' + encodeURIComponent(searchTerm));
+        }
+
+        function searchInRnE() {
+            const searchTerm = document.getElementById('search-bar').value;
+            window.open('http://www.rne.or.kr/gnuboard5/bbs/board.php?bo_table=teen_search&sca=&sop=and&sfl=wr_10%7C%7Cwr_name%7C%7Cwr_content&stx=' + encodeURIComponent(searchTerm));
+        }
+
+        function searchInRISS() {
+            const searchTerm = document.getElementById('search-bar').value;
+            window.open('https://www.riss.kr/search/Search.do?colName=all&isDetailSearch=N&searchGubun=true&oldQuery=&sflag=1&fsearchMethod=search&isFDetailSearch=N&searchQuery=1&kbid=&pageNumber=1&query=' + encodeURIComponent(searchTerm));
+        }
+
+        function classroom() {
+            window.open('https://classroom.google.com/');
+        }
+
+        function cophygue() {
+            window.open('https://wikidocs.net/book/4493');
+        }
+
+        
+
+        const timeDisplay = document.getElementById('time-display');
+
+        setInterval(() => {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            const hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            timeDisplay.textContent = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
+        }, 1000);
+    </script>
+    
 </body>
 </html>
