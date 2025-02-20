@@ -99,6 +99,7 @@
     <header>
         <div><a href="https://qpi-labels.github.io/main/"><img src="https://i.ibb.co/THk34pC/001-12.webp" alt="QISS Logo"></a></div>
         <input type="text" id="search-bar" placeholder="검색어를 입력하세요">
+        <br>
         <div id="search-buttons">
             <button class="search-button" onclick="searchInGoogle()">Google 검색결과</button>
             <button class="search-button" onclick="searchInNaver()">Naver 검색결과</button>
@@ -109,21 +110,12 @@
             <button class="search-button" onclick="askGPT()">GPT</button>
         </div>
 
-        <div id="empty">ㅤ</div>
-        <div id="empty">ㅤ</div>
-        <div id="credit">- 편의정보(베타) -</div>
-
-        <div id="search-buttons">
-            <button class="search-button" onclick="classroom()">클래스룸</button>
-            <button class="search-button" onclick="cophygue()">꽃피게 위키독스</button>
-        </div>
+        <br>
 
         <div id="current-time">현재 시간: <span id="time-display"></span></div>
 
         <div id="credit">Quarter-Pi Integrated Search System | 2024 Quarter-Pi</div>
-        <div id="version"><a href="https://github.com/Jaewon0418/QISS/releases">V 0.1.4 | build240507004</a></div>
-        <div id="empty">ㅤ</div>
-        <div id="empty">ㅤ</div>
+    
     </header>
 
 
@@ -157,14 +149,6 @@
         function searchInRISS() {
             const searchTerm = document.getElementById('search-bar').value;
             window.open('https://www.riss.kr/search/Search.do?colName=all&isDetailSearch=N&searchGubun=true&oldQuery=&sflag=1&fsearchMethod=search&isFDetailSearch=N&searchQuery=1&kbid=&pageNumber=1&query=' + encodeURIComponent(searchTerm));
-        }
-
-        function classroom() {
-            window.open('https://classroom.google.com/');
-        }
-
-        function cophygue() {
-            window.open('https://wikidocs.net/book/4493');
         }
 
         
