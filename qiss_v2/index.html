@@ -105,7 +105,6 @@
             <button class="search-button" onclick="searchInNaver()">Naver</button>
             <button class="search-button" onclick="searchInDBpia()">DBpia</button>
             <button class="search-button" onclick="searchInGs()">Google scholar</button>
-            <button class="search-button" onclick="searchInRnE()">R&E 지원센터</button>
             <button class="search-button" onclick="searchInRISS()">RISS</button>
         </div>
 
@@ -138,11 +137,6 @@
         function searchInGs() {
             const searchTerm = document.getElementById('search-bar').value;
             window.open('https://scholar.google.com/scholar?hl=ko&as_sdt=0%2C5&q=' + encodeURIComponent(searchTerm));
-        }
-
-        function searchInRnE() {
-            const searchTerm = document.getElementById('search-bar').value;
-            window.open('http://www.rne.or.kr/gnuboard5/bbs/board.php?bo_table=teen_search&sca=&sop=and&sfl=wr_10%7C%7Cwr_name%7C%7Cwr_content&stx=' + encodeURIComponent(searchTerm));
         }
 
         function searchInRISS() {
