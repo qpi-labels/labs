@@ -2,45 +2,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Scholar 검색</title>
+    <title>Google Scholar & DBPia 검색</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
         input { width: 300px; padding: 10px; }
         button { padding: 10px; cursor: pointer; }
-        .results { margin-top: 20px; text-align: left; max-width: 600px; margin: auto; }
+        .results { display: flex; justify-content: space-around; margin-top: 20px; }
+        .results div { width: 45%; }
+        .result-item { border-bottom: 1px solid #ddd; padding: 10px 0; }
     </style>
 </head>
 <body>
-    <h2>Google Scholar 검색</h2>
+    <h2>Google Scholar & DBPia 검색</h2>
     <input type="text" id="query" placeholder="검색어 입력">
-    <button onclick="searchScholar()">검색</button>
-    <div class="results" id="results"></div><script>
-    async function searchScholar() {
+    <button onclick="searchBoth()">검색</button>
+    <div class="results">
+        <div>
+            <h3>Google Scholar 결과</h3>
+            <div id="scholar-results"></div>
+        </div>
+        <div>
+            <h3>DBPia 결과</h3>
+            <div id="dbpia-results"></div>
+        </div>
+    </div><script>
+    async function searchBoth() {
         const query = document.getElementById('query').value;
         if (!query) return;
-        
+        searchScholar(query);
+        searchDBPia(query);
+    }
+
+    async function searchScholar(query) {
         const searchUrl = `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}`;
-        document.getElementById('results').innerHTML = `<p>검색 중... <a href='${searchUrl}' target='_blank'>구글 스칼라에서 보기</a></p>`;
-        
-        try {
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`);
-            const data = await response.json();
-            
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data.contents, "text/html");
-            
-            const results = [...doc.querySelectorAll('.gs_r')].slice(0, 3);
-            let output = results.map(r => {
-                const title = r.querySelector('.gs_rt a')?.innerText || '제목 없음';
-                const link = r.querySelector('.gs_rt a')?.href || '#';
-                const snippet = r.querySelector('.gs_rs')?.innerText || '';
-                return `<div><h3><a href='${link}' target='_blank'>${title}</a></h3><p>${snippet}</p></div>`;
-            }).join('<hr>');
-            
-            document.getElementById('results').innerHTML = output || '<p>결과를 찾을 수 없습니다.</p>';
-        } catch (error) {
-            document.getElementById('results').innerHTML = '<p>검색 결과를 가져오는 데 실패했습니다.</p>';
-        }
+        document.getElementById('scholar-results').innerHTML = `<p>검색 중... <a href='${searchUrl}' target='_blank'>구글 스칼라에서 보기</a></p>`;
+    }
+
+    async function searchDBPia(query) {
+        const searchUrl = `https://www.dbpia.co.kr/search/topSearch?query=${encodeURIComponent(query)}`;
+        document.getElementById('dbpia-results').innerHTML = `<p>검색 중... <a href='${searchUrl}' target='_blank'>DBPia에서 보기</a></p>`;
     }
 </script>
 
