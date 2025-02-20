@@ -1,62 +1,48 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html lang="ko">
 <head>
-<title>Google Scholar Search</title>
-<style>
-body {
-  font-family: sans-serif;
-}
-#search-results {
-  margin-top: 20px;
-}
-.result {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-.result-title {
-  font-weight: bold;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Scholar 검색</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input { width: 300px; padding: 10px; }
+        button { padding: 10px; cursor: pointer; }
+        .results { margin-top: 20px; text-align: left; max-width: 600px; margin: auto; }
+    </style>
 </head>
 <body>
-
-<h1>Google Scholar Search</h1>
-
-<input type="text" id="search-box" placeholder="Enter search term">
-<button onclick="search()">Search</button>
-
-<div id="search-results"></div>
-
-<script>
-function search() {
-  const searchTerm = document.getElementById('search-box').value;
-  const searchResults = document.getElementById('search-results');
-
-  // Clear previous results
-  searchResults.innerHTML = '';
-
-  // Replace with your actual Google Scholar search logic
-  // This is a placeholder for demonstration purposes
-  const mockResults = [
-    { title: 'Result 1', link: 'https://scholar.google.com/scholar?q=test1' },
-    { title: 'Result 2', link: 'https://scholar.google.com/scholar?q=test2' },
-    { title: 'Result 3', link: 'https://scholar.google.com/scholar?q=test3' }
-  ];
-
-  // Display the top 3 results
-  for (let i = 0; i < Math.min(3, mockResults.length); i++) {
-    const result = mockResults[i];
-    const resultDiv = document.createElement('div');
-    resultDiv.className = 'result';
-    resultDiv.innerHTML = `
-      <div class="result-title"><a href="${result.link}" target="_blank">${result.title}</a></div>
-    `;
-    searchResults.appendChild(resultDiv);
-  }
-}
+    <h2>Google Scholar 검색</h2>
+    <input type="text" id="query" placeholder="검색어 입력">
+    <button onclick="searchScholar()">검색</button>
+    <div class="results" id="results"></div><script>
+    async function searchScholar() {
+        const query = document.getElementById('query').value;
+        if (!query) return;
+        
+        const searchUrl = `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}`;
+        document.getElementById('results').innerHTML = `<p>검색 중... <a href='${searchUrl}' target='_blank'>구글 스칼라에서 보기</a></p>`;
+        
+        try {
+            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`);
+            const data = await response.json();
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data.contents, "text/html");
+            
+            const results = [...doc.querySelectorAll('.gs_r')].slice(0, 3);
+            let output = results.map(r => {
+                const title = r.querySelector('.gs_rt a')?.innerText || '제목 없음';
+                const link = r.querySelector('.gs_rt a')?.href || '#';
+                const snippet = r.querySelector('.gs_rs')?.innerText || '';
+                return `<div><h3><a href='${link}' target='_blank'>${title}</a></h3><p>${snippet}</p></div>`;
+            }).join('<hr>');
+            
+            document.getElementById('results').innerHTML = output || '<p>결과를 찾을 수 없습니다.</p>';
+        } catch (error) {
+            document.getElementById('results').innerHTML = '<p>검색 결과를 가져오는 데 실패했습니다.</p>';
+        }
+    }
 </script>
 
 </body>
 </html>
-
